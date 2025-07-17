@@ -20,52 +20,89 @@ pagina de salud
     <script src="scripts/firebase.js"></script>
     <script src="scripts/auth.js"></script>
 </body>
-// Textos en diferentes idiomas (ahora incluye los nuevos elementos)
-const textos = {
-    es: {
-        titulo: "📱 InfoSalud",
-        buscarPlaceholder: "Buscar alimentos...",
-        tituloAlimentacion: "🍎 Alimentación",
-        textoAlimentacion: "Consejos y guías nutricionales.",
-        tituloEjercicio: "💪 Ejercicio",
-        textoEjercicio: "Rutinas y planes de entrenamiento.",
-        derechos: "© 2024 - Dibujado a mano ✏️"
-    },
-    en: {
-        titulo: "📱 HealthInfo",
-        buscarPlaceholder: "Search foods...",
-        tituloAlimentacion: "🍎 Nutrition",
-        textoAlimentacion: "Tips and dietary guides.",
-        tituloEjercicio: "💪 Exercise",
-        textoEjercicio: "Workout routines and plans.",
-        derechos: "© 2024 - Hand-drawn ✏️"
-    },
-    // ... (agrega las traducciones para otros idiomas)
-};
+// Función principal que calcula IMC y peso ideal
+export function calcularIMC(peso, altura) {
+    // Validar datos
+    if (peso <= 0 || altura <= 0) return { error: "Valores inválidos" };
 
-function cambiarIdioma() {
-    const idioma = document.getElementById("idioma").value;
-    const t = textos[idioma];
-    
-    // Actualiza todos los textos
-    document.getElementById("titulo").textContent = t.titulo;
-    document.getElementById("buscar-alimento").placeholder = t.buscarPlaceholder;
-    document.getElementById("titulo-alimentacion").textContent = t.tituloAlimentacion;
-    document.getElementById("texto-alimentacion").textContent = t.textoAlimentacion;
-    document.getElementById("titulo-ejercicio").textContent = t.tituloEjercicio;
-    document.getElementById("texto-ejercicio").textContent = t.textoEjercicio;
-    document.getElementById("derechos").textContent = t.derechos;
+    // Calcular IMC (peso en kg / altura en metros al cuadrado)
+    const alturaMetros = altura / 100;
+    const imc = (peso / (alturaMetros * alturaMetros)).toFixed(1);
+
+    // Calcular peso ideal (Fórmula de Lorentz)
+    const pesoIdealMin = ((altura - 100) - ((altura - 150) / 4)).toFixed(1);
+    const pesoIdealMax = ((altura - 100) - ((altura - 150) / 2.5)).toFixed(1);
+
+    // Interpretar IMC
+    let categoria;
+    if (imc < 18.5) categoria = "Bajo peso";
+    else if (imc < 25) categoria = "Peso normal";
+    else if (imc < 30) categoria = "Sobrepeso";
+    else categoria = "Obesidad";
+
+    return {
+        imc,
+        categoria,
+        pesoIdeal: `${pesoIdealMin}kg - ${pesoIdealMax}kg`,
+        grafico: generarGraficoIMC(imc) // Función opcional para gráfico
+    };
 }
 
-function buscarAlimento() {
-    const alimento = document.getElementById("buscar-alimento").value;
-    alert(`Buscando: ${alimento}`); // Puedes reemplazar esto con una búsqueda real
+// Función auxiliar para gráfico visual (opcional)
+function generarGraficoIMC(imc) {
+    const niveles = ["Bajo", "Normal", "Sobrepeso", "Obesidad"];
+    const valores = [18.5, 25, 30];
+    let posicion = valores.findIndex(val => imc < val);
+    if (posicion === -1) posicion = 3;
+    
+    return niveles.map((nivel, i) => ({
+        nivel,
+        activo: i === posicion
+    }));
+}
 }
 
 function mostrarAlimentacion() {
     alert("Mostrando sección de Alimentación"); // Ejemplo: redirigir a otra página
 }
+<div class="calculadora dibujado">
+    <h2>📊 Calculadora de Salud</h2>
+    <input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
+    <input type="number" id="altura" placeholder="Altura (cm)">
+    <button onclick="mostrarResultados()">Calcular</button>
+    
+    <div id="resultados-imc" class="resultados">
+        <!-- Resultados dinámicos -->
+    </div>
+</div>
 
+<script type="module">
+    import { calcularIMC } from '../scripts/calculadora.js';
+    
+    window.mostrarResultados = function() {
+        const peso = parseFloat(document.getElementById('peso').value);
+        const altura = parseFloat(document.getElementById('altura').value);
+        
+        const resultados = calcularIMC(peso, altura);
+        
+        if (resultados.error) {
+            alert(resultados.error);
+            return;
+        }
+        
+        document.getElementById('resultados-imc').innerHTML = `
+            <p><strong>IMC:</strong> ${resultados.imc} (${resultados.categoria})</p>
+            <p><strong>Peso ideal:</strong> ${resultados.pesoIdeal}</p>
+            <div class="grafico-imc">
+                ${resultados.grafico.map(item => `
+                    <div class="barra ${item.activo ? 'activo' : ''}">
+                        ${item.nivel}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    };
+</script>
 function mostrarEjercicio() {
     alert("Mostrando sección de Ejercicio");
 }
