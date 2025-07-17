@@ -1,0 +1,4 @@
+[Bajo] [Normal] [Sobrepeso] [Obesidad]
+           ^
+           |
+        (Activo)

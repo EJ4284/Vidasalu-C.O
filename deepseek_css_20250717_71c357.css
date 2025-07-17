@@ -1,0 +1,48 @@
+/* Estilos para la calculadora */
+.calculadora {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+}
+
+.calculadora input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+}
+
+.resultados {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Gráfico de IMC */
+.grafico-imc {
+    display: flex;
+    height: 30px;
+    margin-top: 15px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.barra {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+    color: white;
+    font-size: 12px;
+}
+
+.barra:nth-child(1) { background: #4CAF50; } /* Bajo peso */
+.barra:nth-child(2) { background: #8BC34A; } /* Normal */
+.barra:nth-child(3) { background: #FFC107; } /* Sobrepeso */
+.barra:nth-child(4) { background: #F44336; } /* Obesidad */
+
+.barra.activo {
+    border-top: 3px solid #333;
+    font-weight: bold;
+}
