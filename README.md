@@ -1,24 +1,6 @@
 # Vidasalu-C.O
 pagina de salud
-app-salud/
-├── index.html          # Página de inicio (login/registro)
-├── app.html            # Página principal (chatbot + QR)
-├── perfil.html         # Formulario médico
-├── calendario.html     # Calendario interactivo
-├── styles/
-│   └── styles.css      # Estilos CSS
-├── scripts/
-│   ├── firebase.js     # Configuración Firebase
-│   ├── auth.js         # Autenticación
-│   ├── perfil.js       # Perfil médico
-│   ├── voz.js          # Reconocimiento de voz
-│   ├── chatbot.js      # Lógica del chatbot
-│   ├── calendario.js   # FullCalendar + rutinas
-│   └── qr.js           # Generador de QR
-├── assets/             # Imágenes/iconos
-│   ├── icono.png       # Favicon
-│   └── logo.png        # Logo opcional
-└── .gitignore          # Ignorar node_modules
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,3 +26,12 @@ app-salud/
     <script src="scripts/auth.js"></script>
 </body>
 </html>
+// Generar QR automático al cargar la app
+document.addEventListener('DOMContentLoaded', () => {
+    const url = window.location.href.replace('index.html', 'app.html');
+    QRCode.toCanvas(document.getElementById('qr-code'), url, {
+        width: 200,
+        margin: 2,
+        color: { dark: '#4CAF50', light: '#ffffff' }
+    });
+});
