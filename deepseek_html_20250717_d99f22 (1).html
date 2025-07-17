@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Salud | Login</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="formulario">
+            <h1>👋 ¡Bienvenido!</h1>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button onclick="registrarUsuario()">Registrarse</button>
+            <button onclick="iniciarSesion()">Iniciar Sesión</button>
+        </div>
+    </div>
+    <script src="scripts/firebase.js"></script>
+    <script src="scripts/auth.js"></script>
+</body>
+</html>
